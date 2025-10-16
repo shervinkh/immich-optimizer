@@ -28,6 +28,10 @@ func NewImmichClient(baseURL, apiKey string, timeoutSeconds int, logger *customL
 }
 
 func (c *ImmichClient) UploadAsset(filePath string) error {
+	return c.UploadAssetWithFilename(filePath, filepath.Base(filePath))
+}
+
+func (c *ImmichClient) UploadAssetWithFilename(filePath, filename string) error {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return fmt.Errorf("unable to open file: %w", err)
@@ -43,7 +47,6 @@ func (c *ImmichClient) UploadAsset(filePath string) error {
 	writer := multipart.NewWriter(&buffer)
 
 	// Add required fields
-	filename := filepath.Base(filePath)
 	deviceAssetId := fmt.Sprintf("%s-%d", filename, stat.ModTime().Unix())
 	deviceId := "immich-optimizer"
 
