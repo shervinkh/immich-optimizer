@@ -107,7 +107,11 @@ func (fw *FileWatcher) uploadProcessedFile(originalFilePath string, tp *TaskProc
 	fw.logger.Printf("Optimized file uploaded: %s -> %s",
 		humanReadableSize(tp.OriginalSize),
 		humanReadableSize(tp.ProcessedSize))
-	fw.uploadToImmich(processedFilePath)
+	processedFilename := tp.ProcessedFilename
+	if processedFilename == "" {
+		processedFilename = filepath.Base(originalFilePath)
+	}
+	fw.uploadToImmichWithFilename(processedFilePath, processedFilename)
 }
 
 // uploadOriginalFile uploads the original file without optimization

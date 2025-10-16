@@ -1,9 +1,15 @@
 package main
 
-// uploadToImmich uploads a file to the Immich server
+import "path/filepath"
+
+// uploadToImmich uploads a file to the Immich server, preserving the file's current name
 func (fw *FileWatcher) uploadToImmich(uploadFilePath string) {
-	err := fw.immichClient.UploadAsset(uploadFilePath)
-	if err != nil {
+	fw.uploadToImmichWithFilename(uploadFilePath, filepath.Base(uploadFilePath))
+}
+
+// uploadToImmichWithFilename uploads a file using the provided filename metadata
+func (fw *FileWatcher) uploadToImmichWithFilename(uploadFilePath, filename string) {
+	if err := fw.immichClient.UploadAssetWithFilename(uploadFilePath, filename); err != nil {
 		fw.handleUploadError(uploadFilePath, err)
 	}
 }
