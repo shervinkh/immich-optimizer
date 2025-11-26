@@ -24,6 +24,8 @@ A file optimization service that automatically processes and uploads media files
 
 ## 📦 Installation
 
+See [ARCHITECTURE.md](ARCHITECTURE.md) to understand the whole picture.
+
 ### Docker (Recommended)
 
 ```bash
