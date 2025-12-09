@@ -84,3 +84,18 @@ func copyFileToUndone(filePath, watchDir, undoneDir string) error {
 
 	return nil
 }
+
+func deleteFile(filePath, watchDir string) error {
+    relPath, err := filepath.Rel(watchDir, filePath)
+    if err != nil {
+        return fmt.Errorf("failed to get relative path: %w", err)
+    }
+
+    destPath := filepath.Join(watchDir, relPath)
+
+    if err := os.Remove(destPath); err != nil {
+        return fmt.Errorf("failed to delete file: %w", err)
+    }
+
+    return nil
+}

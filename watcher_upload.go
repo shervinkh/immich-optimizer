@@ -11,6 +11,11 @@ func (fw *FileWatcher) uploadToImmich(uploadFilePath string) {
 func (fw *FileWatcher) uploadToImmichWithFilename(uploadFilePath, filename string) {
 	if err := fw.immichClient.UploadAssetWithFilename(uploadFilePath, filename); err != nil {
 		fw.handleUploadError(uploadFilePath, err)
+	} else if fw.appConfig.DeleteOnUpload {
+		fw.logger.Printf("Deleting file %s after successful upload...", uploadFilePath)
+		if deleteErr := deleteFile(uploadFilePath, fw.watchDir); deleteErr != nil {
+			fw.logger.Printf("Error deleting file %s: %v", uploadFilePath, deleteErr)
+		}
 	}
 }
 
