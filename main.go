@@ -28,6 +28,7 @@ type AppConfig struct {
 	WatchDir              string
 	UndoneDir             string
 	ConfigFile            string
+	DeleteOnUpload        bool
 	MaxConcurrentRequests int
 	HTTPTimeoutSeconds    int
 	InotifyBufferSize     int
@@ -56,12 +57,14 @@ func init() {
 	viper.BindEnv("immich_api_key")
 	viper.BindEnv("watch_dir")
 	viper.BindEnv("undone_dir")
+	viper.BindEnv("delete_on_upload")
 	viper.BindEnv("tasks_file")
 
 	viper.SetDefault("immich_url", "")
 	viper.SetDefault("immich_api_key", "")
 	viper.SetDefault("watch_dir", "/watch")
 	viper.SetDefault("undone_dir", "/undone")
+	viper.SetDefault("delete_on_upload", false)
 	viper.SetDefault("tasks_file", "tasks.yaml")
 
 	flag.BoolVar(&appConfig.ShowVersion, "version", false, "Show the current version")
@@ -69,6 +72,7 @@ func init() {
 	flag.StringVar(&appConfig.ImmichAPIKey, "immich_api_key", viper.GetString("immich_api_key"), "Immich API key")
 	flag.StringVar(&appConfig.WatchDir, "watch_dir", viper.GetString("watch_dir"), "Directory to watch for new files")
 	flag.StringVar(&appConfig.UndoneDir, "undone_dir", viper.GetString("undone_dir"), "Directory to copy files that failed processing or upload")
+	flag.BoolVar(&appConfig.DeleteOnUpload, "delete_on_upload", false, "Delete files after successful upload")
 	flag.StringVar(&appConfig.ConfigFile, "tasks_file", viper.GetString("tasks_file"), "Path to the configuration file")
 	flag.Parse()
 
